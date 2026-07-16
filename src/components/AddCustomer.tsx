@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import PersonalDetails from "../forms/PersonalDetails";
 import AddressDetails from "../forms/AddressDetails";
@@ -18,6 +18,20 @@ const AddCustomer = () => {
       city: "",
     },
   });
+
+  useEffect(() => {
+  const saved = localStorage.getItem("customerDraft");
+
+  if (saved) {
+    form.reset(JSON.parse(saved));
+  }
+}, []);
+
+const values = form.watch();
+
+useEffect(() => {
+  localStorage.setItem("customerDraft", JSON.stringify(values)||"[]");
+}, [values]);
 
   return (
     <>
