@@ -5,9 +5,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "./ui/input";
-// import { Badge } from "./ui/badge";
-// import { Search } from "lucide-react";
 
 const StatsData = [
   {
@@ -50,20 +47,6 @@ const StatsBar = () => {
           </CardDescription>
         </Card>
       ))}
-      <div className="w-full md:max-w-md lg:w-screen">
-        {/* <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" /> */}
-        <Input
-          placeholder="Search customer, invoice..."
-          className="pl-10 h-11 border-2 w-full "
-        />
-
-        {/* <Badge
-          variant="secondary"
-          className="absolute right-3 top-1/2 -translate-y-1/2"
-        >
-          ⌘K
-        </Badge> */}
-      </div>
     </div>
   );
 };

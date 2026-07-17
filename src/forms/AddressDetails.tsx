@@ -4,46 +4,42 @@ import { Card } from "@/components/ui/card";
 import { MapPinPen } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import ButtonChildren from "../components/ChildrenButtom";
+import { useNavigate } from "react-router-dom";
 
 const AddressDetails = ({ setStep, step }) => {
-
+  const navigate = useNavigate();
   const handleNext = async () => {
-    const isValid = await trigger([ "address",
-    "city"]);
+    const isValid = await trigger(["address", "city", "state"]);
 
     if (isValid) {
-      
-       handleSubmit(onSubmit)();
+      handleSubmit(onSubmit)();
     }
   };
 
   const onSubmit = (data) => {
-  // Get existing customers
-  const customers =
-    JSON.parse(localStorage.getItem("customers")) || [];
+    // Get existing customers
+    const customers = JSON.parse(localStorage.getItem("customers")) || [];
 
-  // Add new customer
-  customers.push({
-    id: Math.floor(Math.random()*100)+1,
-    ...data,
-  });
+    // Add new customer
+    customers.push({
+      id: Math.floor(Math.random() * 100) + 1,
+      ...data,
+    });
 
-  // Save back to localStorage
-  localStorage.setItem("customers", JSON.stringify(customers) || "[]");
- console.log("Saved:", JSON.parse(localStorage.getItem("customers")!));
-  // Remove draft
-  localStorage.removeItem("customerDraft");
+    // Save back to localStorage
+    localStorage.setItem("customers", JSON.stringify(customers) || "[]");
+    console.log("Saved:", JSON.parse(localStorage.getItem("customers")!));
 
-  // Go to dashboard
-  // navigate("/customers");
-};
+    // Go to dashboard
+    navigate("/customer-page");
+  };
 
   const {
-  register,
-  trigger,
-  handleSubmit,
-  formState: { errors },
-} = useFormContext();
+    register,
+    trigger,
+    handleSubmit,
+    formState: { errors },
+  } = useFormContext();
 
   const steps = [
     { number: "✓", label: "STEP 1", title: "Personal" },
@@ -52,7 +48,7 @@ const AddressDetails = ({ setStep, step }) => {
   ];
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-[#f1f5f9] rounded-xl px-4 py-8">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-[#f1f5f9] rounded-xl px-4 ">
       <div className="flex flex-col lg:flex-row w-full max-w-[700px] justify-between items-center lg:items-center gap-6 lg:gap-4">
         {/* Title */}
         <div className="flex flex-col justify-center text-center lg:text-left">
@@ -93,7 +89,7 @@ const AddressDetails = ({ setStep, step }) => {
             id="input-demo-api-key"
             type="text"
             placeholder="Jimmy mcgill"
-             {...register("address")}
+            {...register("address")}
             className="bg-[#f1f5f9] p-6"
           />
           <p className="text-red-500">{errors.address?.message}</p>
@@ -111,7 +107,7 @@ const AddressDetails = ({ setStep, step }) => {
               type="text"
               placeholder="Albequrqe"
               className="bg-[#f1f5f9] p-6"
-               {...register("city")}
+              {...register("city")}
             />
             <p className="text-red-500">{errors.city?.message}</p>
           </Field>
@@ -124,7 +120,9 @@ const AddressDetails = ({ setStep, step }) => {
               type="text"
               placeholder="New mexico"
               className="bg-[#f1f5f9] p-6"
+              {...register("state")}
             />
+            <p className="text-red-500">{errors.state?.message}</p>
           </Field>
         </div>
 
@@ -178,7 +176,12 @@ const AddressDetails = ({ setStep, step }) => {
             Previous
           </h1>
 
-          <ButtonChildren type="button" onClick={()=>{handleNext()}}>
+          <ButtonChildren
+            type="button"
+            onClick={() => {
+              handleNext();
+            }}
+          >
             Continue
           </ButtonChildren>
         </div>
