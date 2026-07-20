@@ -1,13 +1,15 @@
-import React from 'react'
-import Navbar from '@/components/Navbar'
-import InvoiceForm from '@/forms/InvoiceForm'
+import Navbar from "@/components/Navbar";
+import InvoiceForm from "@/forms/InvoiceForm";
+
 const AddInvoice = () => {
   return (
-    <div>
-      <Navbar/>
-      <InvoiceForm/>
-    </div>
-  )
-}
+    <div className="min-h-screen felx ">
+      <Navbar />
 
-export default AddInvoice
+      <div className="flex justify-center  lg:ml-[660px]">
+        <InvoiceForm />
+      </div>
+    </div>
+  );
+};
+export default AddInvoice;

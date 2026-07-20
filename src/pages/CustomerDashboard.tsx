@@ -9,7 +9,6 @@ const CustomerDashboard = () => {
       <div>
         <Navbar />
         <MiddleManage />
-
         <Customertable />
       </div>
     </>

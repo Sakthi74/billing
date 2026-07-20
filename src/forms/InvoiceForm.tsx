@@ -1,21 +1,21 @@
 import { Field, FieldLabel } from "../components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-
+import { useNavigate } from "react-router-dom";
 import ButtonChildren from "../components/ChildrenButtom";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Navbar from "@/components/Navbar";
 import { invoiceSchema, type InvoiceFormData } from "../schema/InvoiceSchema";
 
 import { ReceiptText, Trash2 } from "lucide-react";
-
 
 const InvoiceForm = () => {
   const {
     register,
     handleSubmit,
     trigger,
-      watch,
+    watch,
 
     control,
     formState: { errors },
@@ -36,19 +36,46 @@ const InvoiceForm = () => {
     },
   });
   const items = watch("items");
-  const subTotal=items.reduce((total,num)=>{return total+(num.quantity*num.price)},0)
-  const taxTotal=items.reduce((total,num)=>{return total+((num.quantity*num.price)*(num.tax)/100)},0)
-  const grantTotal=subTotal+taxTotal
+  const subTotal = items.reduce((total, num) => {
+    return total + num.quantity * num.price;
+  }, 0);
+  const taxTotal = items.reduce((total, num) => {
+    return total + (num.quantity * num.price * num.tax) / 100;
+  }, 0);
+  const grantTotal = subTotal + taxTotal;
+  const navigate = useNavigate();
 
+  const customers = JSON.parse(localStorage.getItem("customers") || "[]");
+
+  //onsubmit function
   const onSubmit = (data: InvoiceFormData) => {
-    const invoice=JSON.parse(localStorage.getItem("invoice")  || "[]");
-    invoice.push({id:Math.floor(Math.random()*100)+1,...data})
- localStorage.setItem("invoice", JSON.stringify(invoice));
-     console.log(invoice);
+    const invoice = JSON.parse(localStorage.getItem("invoice") || "[]");
+    //finding customer to get name
+    const selectedCustomer = customers.find(
+      (customer: any) => customer.id === Number(data.customerId),
+    );
+
+    invoice.push({
+      id: Math.floor(Math.random() * 100) + 1,
+      customerName: selectedCustomer?.fullName || "",
+      ...data,
+    });
+    localStorage.setItem("invoice", JSON.stringify(invoice));
+    navigate("/invoice-page");
+    console.log(invoice);
   };
 
+  //validation fuction
   const onValidate = async () => {
-    const isValid = await trigger(["customerId", "invoiceDate", "dueDate","items.0.description","items.0.quantity","items.0.price","items.0.tax"]);
+    const isValid = await trigger([
+      "customerId",
+      "invoiceDate",
+      "dueDate",
+      "items.0.description",
+      "items.0.quantity",
+      "items.0.price",
+      "items.0.tax",
+    ]);
     if (isValid) {
       handleSubmit(onSubmit)();
     }
@@ -60,10 +87,8 @@ const InvoiceForm = () => {
   });
 
   return (
-   
-    <div className="flex p-6 lg:p-0 justify-center">
-      
-      <Card className="w-full max-w-[700px] lg:w-1/2 p-6 sm:p-12 mt-6">
+    <div className="flex flex-col p-4  lg:p-0 w-screen">
+      <Card className="w-full max-w-screen h-screen max-h-[600px] lg:max-h-screen overflow-y-auto md:overflow-y-hidden lg:overflow-y-hidden lg:w-1/2 p-6 sm:p-12 mt-6">
         <div className="flex border-b border-black p-4 gap-3">
           <ReceiptText />
           <h1 className="font-bold">Create New Invoice</h1>
@@ -107,7 +132,7 @@ const InvoiceForm = () => {
                 type="date"
                 className="bg-[#f1f5f9] p-6"
                 {...register("invoiceDate")}
-              />  
+              />
               <p className="text-red-500">
                 {errors.invoiceDate?.message as string}
               </p>
@@ -139,14 +164,17 @@ const InvoiceForm = () => {
                   price: 0,
                   tax: 10,
                 })
-              }  
+              }
               className="mb-3 text-sm font-medium text-indigo-600 cursor-pointer hover:text-green-400 lg:ml-96 ml-48  md:ml-96 text-"
             >
               + Add Item
             </button>
 
             {fields.map((field, index) => (
-              <div key={field.id} className="flex flex-wrap gap-3 items-end mb-3">
+              <div
+                key={field.id}
+                className="flex flex-wrap gap-3 items-end mb-3"
+              >
                 <Field className="flex-1 min-w-[140px]">
                   <FieldLabel htmlFor={`item-description-${index}`}>
                     Description
@@ -164,7 +192,7 @@ const InvoiceForm = () => {
 
                 <Field className="w-24">
                   <FieldLabel htmlFor={`item-quantity-${index}`}>
-                    Qty 
+                    Qty
                   </FieldLabel>
                   <Input
                     id={`item-quantity-${index}`}
@@ -180,9 +208,7 @@ const InvoiceForm = () => {
                 </Field>
 
                 <Field className="w-28">
-                  <FieldLabel htmlFor={`item-price-${index}`}>
-                    Price
-                  </FieldLabel>
+                  <FieldLabel htmlFor={`item-price-${index}`}>Price</FieldLabel>
                   <Input
                     id={`item-price-${index}`}
                     type="number"
@@ -223,30 +249,28 @@ const InvoiceForm = () => {
             ))}
           </Card>
 
-         <Card className="mt-6 p-5 bg-slate-50 border border-gray-200 rounded-lg shadow-sm">
-  <div className="flex justify-between items-center py-2 border-b">
-    <h1 className="text-gray-600 font-medium">SUB TOTAL</h1>
-    <h1 className="text-lg font-semibold text-gray-800">
-      ${subTotal.toFixed(2)}
-    </h1>
-  </div>
+          <Card className="mt-6 p-5 bg-slate-50 border border-gray-200 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center py-2 border-b">
+              <h1 className="text-gray-600 font-medium">SUB TOTAL</h1>
+              <h1 className="text-lg font-semibold text-gray-800">
+                ${subTotal.toFixed(2)}
+              </h1>
+            </div>
 
-  <div className="flex justify-between items-center py-2 border-b">
-    <h1 className="text-gray-600 font-medium">TAXES</h1>
-    <h1 className="text-lg font-semibold text-gray-800">
-      ${taxTotal.toFixed(2)}
-    </h1>
-  </div>
+            <div className="flex justify-between items-center py-2 border-b">
+              <h1 className="text-gray-600 font-medium">TAXES</h1>
+              <h1 className="text-lg font-semibold text-gray-800">
+                ${taxTotal.toFixed(2)}
+              </h1>
+            </div>
 
-  <div className="flex justify-between items-center pt-4">
-    <h1 className="text-xl font-bold text-indigo-600">
-      Grand Total
-    </h1>
-    <h1 className="text-2xl font-bold text-indigo-600">
-      ${grantTotal.toFixed(2)}
-    </h1>
-  </div>
-</Card> 
+            <div className="flex justify-between items-center pt-4">
+              <h1 className="text-xl font-bold text-indigo-600">Grand Total</h1>
+              <h1 className="text-2xl font-bold text-indigo-600">
+                ${grantTotal.toFixed(2)}
+              </h1>
+            </div>
+          </Card>
 
           <div className="flex justify-end mt-6">
             <ButtonChildren type="button" onClick={onValidate}>

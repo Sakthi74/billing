@@ -5,20 +5,40 @@ import { MapPinPen } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import ButtonChildren from "../components/ChildrenButtom";
 import { useNavigate } from "react-router-dom";
+import { toast, Bounce } from "react-toastify";
 
-const AddressDetails = ({ setStep, step }) => {
+interface AddressDetailsProps {
+  step: number;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const AddressDetails = ({ setStep, step }: AddressDetailsProps) => {
   const navigate = useNavigate();
-  const handleNext = async () => {
-    const isValid = await trigger(["address", "city", "state"]);
 
-    if (isValid) {
-      handleSubmit(onSubmit)();
-    }
+  const {
+    register,
+    trigger,
+    getValues,
+    formState: { errors },
+  } = useFormContext();
+
+  const notifi = () => {
+    toast.success("CUSTOMER ADDED SUCCESSFULLY!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: Record<string, unknown>) => {
     // Get existing customers
-    const customers = JSON.parse(localStorage.getItem("customers")) || [];
+    const customers = JSON.parse(localStorage.getItem("customers") || "[]");
 
     // Add new customer
     customers.push({
@@ -27,19 +47,33 @@ const AddressDetails = ({ setStep, step }) => {
     });
 
     // Save back to localStorage
-    localStorage.setItem("customers", JSON.stringify(customers) || "[]");
-    console.log("Saved:", JSON.parse(localStorage.getItem("customers")!));
+    localStorage.setItem("customers", JSON.stringify(customers));
+    console.log(
+      "Saved:",
+      JSON.parse(localStorage.getItem("customers") || "[]"),
+    );
 
-    // Go to dashboard
-    navigate("/customer-page");
+    // Show toast
+    notifi();
+
+    // Go to dashboard after a short delay
+    setTimeout(() => {
+      navigate("/customer-page");
+    }, 3000);
   };
 
-  const {
-    register,
-    trigger,
-    handleSubmit,
-    formState: { errors },
-  } = useFormContext();
+  const handleNext = async () => {
+    // Only validate this step's fields — NOT the whole form/schema
+    const isValid = await trigger(["address", "city", "state"]);
+
+    if (isValid) {
+      // Use getValues() instead of handleSubmit(), since handleSubmit
+      // re-validates the ENTIRE multi-step schema (including fields
+      // from other steps), which silently blocks submission if any
+      // unrelated field elsewhere hasn't been filled/validated yet.
+      onSubmit(getValues());
+    }
+  };
 
   const steps = [
     { number: "✓", label: "STEP 1", title: "Personal" },
@@ -81,22 +115,22 @@ const AddressDetails = ({ setStep, step }) => {
           <MapPinPen />
           <h1>Address Details</h1>
         </div>
+
         <Field>
-          <FieldLabel htmlFor="input-demo-api-key">
+          <FieldLabel htmlFor="input-address">
             Street Address <sup className="text-red-500">*</sup>
           </FieldLabel>
           <Input
-            id="input-demo-api-key"
+            id="input-address"
             type="text"
             placeholder="Jimmy mcgill"
             {...register("address")}
             className="bg-[#f1f5f9] p-6"
           />
-          <p className="text-red-500">{errors.address?.message}</p>
+          <p className="text-red-500">{errors.address?.message as string}</p>
         </Field>
 
         {/* row2 */}
-
         <div className="flex flex-col sm:flex-row gap-2">
           <Field className="w-full">
             <FieldLabel htmlFor="input-city">
@@ -109,7 +143,7 @@ const AddressDetails = ({ setStep, step }) => {
               className="bg-[#f1f5f9] p-6"
               {...register("city")}
             />
-            <p className="text-red-500">{errors.city?.message}</p>
+            <p className="text-red-500">{errors.city?.message as string}</p>
           </Field>
           <Field className="w-full">
             <FieldLabel htmlFor="input-state">
@@ -122,12 +156,11 @@ const AddressDetails = ({ setStep, step }) => {
               className="bg-[#f1f5f9] p-6"
               {...register("state")}
             />
-            <p className="text-red-500">{errors.state?.message}</p>
+            <p className="text-red-500">{errors.state?.message as string}</p>
           </Field>
         </div>
 
         {/* row3 */}
-
         <div className="flex flex-col sm:flex-row gap-2">
           <Field className="w-full">
             <FieldLabel htmlFor="input-zip">
@@ -138,7 +171,9 @@ const AddressDetails = ({ setStep, step }) => {
               type="number"
               placeholder="625007"
               className="bg-[#f1f5f9] p-6"
+              {...register("zip")}
             />
+            <p className="text-red-500">{errors.zip?.message as string}</p>
           </Field>
           <Field className="w-full">
             <FieldLabel htmlFor="input-country">
@@ -149,7 +184,9 @@ const AddressDetails = ({ setStep, step }) => {
               type="text"
               placeholder="India"
               className="bg-[#f1f5f9] p-6"
+              {...register("country")}
             />
+            <p className="text-red-500">{errors.country?.message as string}</p>
           </Field>
         </div>
 
@@ -157,6 +194,7 @@ const AddressDetails = ({ setStep, step }) => {
           <Input
             id="input-shipping-same"
             type="checkbox"
+            {...register("shippingSame")}
             className="h-4 w-4 cursor-pointer rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
           />
           <FieldLabel
@@ -176,12 +214,7 @@ const AddressDetails = ({ setStep, step }) => {
             Previous
           </h1>
 
-          <ButtonChildren
-            type="button"
-            onClick={() => {
-              handleNext();
-            }}
-          >
+          <ButtonChildren type="button" onClick={handleNext}>
             Continue
           </ButtonChildren>
         </div>
