@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import ButtonChildren from "../components/ChildrenButtom";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Navbar from "@/components/Navbar";
-import { invoiceSchema, type InvoiceFormData } from "../schema/InvoiceSchema";
+
+import { invoiceSchema, type invoiceFormData } from "../schema/InvoiceSchema";
 
 import { ReceiptText, Trash2 } from "lucide-react";
 
@@ -19,7 +19,7 @@ const InvoiceForm = () => {
 
     control,
     formState: { errors },
-  } = useForm<InvoiceFormData>({
+  } = useForm<invoiceFormData>({
     resolver: zodResolver(invoiceSchema),
     defaultValues: {
       customerId: "",
@@ -36,10 +36,10 @@ const InvoiceForm = () => {
     },
   });
   const items = watch("items");
-  const subTotal = items.reduce((total, num) => {
+  const subTotal = items.reduce((total: number, num) => {
     return total + num.quantity * num.price;
   }, 0);
-  const taxTotal = items.reduce((total, num) => {
+  const taxTotal = items.reduce((total: number, num) => {
     return total + (num.quantity * num.price * num.tax) / 100;
   }, 0);
   const grantTotal = subTotal + taxTotal;
@@ -48,7 +48,7 @@ const InvoiceForm = () => {
   const customers = JSON.parse(localStorage.getItem("customers") || "[]");
 
   //onsubmit function
-  const onSubmit = (data: InvoiceFormData) => {
+  const onSubmit = (data: invoiceFormData) => {
     const invoice = JSON.parse(localStorage.getItem("invoice") || "[]");
     //finding customer to get name
     const selectedCustomer = customers.find(

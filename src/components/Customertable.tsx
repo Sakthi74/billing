@@ -51,16 +51,24 @@ const columns = [
       </span>
     ),
   }),
-  columnHelper.accessor("status", {
-    header: "Status",
-    cell: (info) => (
-      <>
-        <div className="bg-[#d4f4e5] text-[#035439] rounded-md w-12 p-1 flex justify-center items-center">
-          Paid
-        </div>
-      </>
-    ),
-  }),
+  // columnHelper.accessor("status", {
+  //   header: "Status",
+  //   cell: (info) => {
+  //     const status = info.getValue();
+  //     const isPaid = status?.toLowerCase() === "paid";
+  //     return (
+  //       <div
+  //         className={`rounded-md w-16 p-1 flex justify-center items-center text-xs font-medium ${
+  //           isPaid
+  //             ? "bg-[#d4f4e5] text-[#035439]"
+  //             : "bg-[#fde8e8] text-[#9b1c1c]"
+  //         }`}
+  //       >
+  //         {status}
+  //       </div>
+  //     );
+  //   },
+  // }),
 ];
 
 const Customertable = () => {

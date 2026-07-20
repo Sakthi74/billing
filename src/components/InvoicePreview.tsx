@@ -29,12 +29,12 @@ const InvoicePreview = () => {
   }
 
   const subtotal = selectedInvoice.items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum: number, item) => sum + item.price * item.quantity,
     0,
   );
 
   const tax = selectedInvoice.items.reduce(
-    (sum, item) => sum + (item.price * item.quantity * item.tax) / 100,
+    (sum: number, item) => sum + (item.price * item.quantity * item.tax) / 100,
     0,
   );
 

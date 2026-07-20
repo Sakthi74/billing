@@ -5,7 +5,12 @@ import { User } from "lucide-react";
 import ButtonChildren from "../components/ChildrenButtom";
 import { useFormContext } from "react-hook-form";
 
-const PersonalDetails = ({ step, setStep }) => {
+interface PersonalDetailsProps {
+  step: number;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const PersonalDetails = ({ step, setStep }: PersonalDetailsProps) => {
   const {
     register,
     trigger,
@@ -17,7 +22,6 @@ const PersonalDetails = ({ step, setStep }) => {
 
     if (isValid) {
       setStep(step + 1);
-      
     }
   };
 
