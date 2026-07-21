@@ -18,12 +18,12 @@ const StatsBar = () => {
 
   //using local storage
   const invoiceDetails = JSON.parse(localStorage.getItem("invoice") || "[]");
-  const paidCount = invoiceDetails.filter((item) => {
+  const paidCount = invoiceDetails.filter((item: any) => {
     return item.status.toLowerCase() === "paid";
   }).length;
   console.log(`paidCount : ${paidCount}`);
 
-  const unPaidCount = invoiceDetails.filter((item) => {
+  const unPaidCount = invoiceDetails.filter((item: any) => {
     return item.status.toLowerCase() === "unpaid";
   }).length;
   console.log(`paidCount : ${unPaidCount}`);
