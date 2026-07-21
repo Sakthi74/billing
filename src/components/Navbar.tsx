@@ -13,7 +13,8 @@ const Navbar = () => {
 
   const isCustomerActive =
     location.pathname === "/customer-page" ||
-    location.pathname === "/add-customer";
+    location.pathname === "/add-customer" ||
+    location.pathname === "/";
 
   const activeClass =
     "cursor-pointer px-4 py-5 bg-black text-white border border-gray-400 hover:bg-black";

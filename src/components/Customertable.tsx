@@ -101,7 +101,7 @@ const Customertable = () => {
     getCoreRowModel: getCoreRowModel(),
     initialState: {
       pagination: {
-        pageSize: 3,
+        pageSize: 10,
       },
     },
 

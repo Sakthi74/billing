@@ -52,7 +52,7 @@ const InvoicePreview = () => {
 
           <button
             onClick={() => window.print()}
-            className="bg-indigo-600 text-white px-5 py-2 rounded-lg"
+            className="bg-gray-700 cursor-pointer text-white px-5 font-bold hover:bg-gray-500 rounded-lg"
           >
             Print
           </button>
@@ -74,7 +74,7 @@ const InvoicePreview = () => {
         </div>
 
         <table className="w-full border">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-100 border-t">
             <tr>
               <th className="border p-3 text-left">Description</th>
 

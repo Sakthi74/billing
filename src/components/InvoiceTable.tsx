@@ -85,7 +85,7 @@ const InvoiceTable = () => {
   const navigate = useNavigate();
   return (
     <div className="p-6 bg-[#f1f5f9]">
-      <h2 className="text-xl font-bold text-gray-800">All Invoices</h2>
+      <h2 className="text-xl font-bold text-gray-800 p-1">All Invoices</h2>
       <div className="overflow-x-auto rounded-xl border bg-white shadow">
         <table className="lg:w-full md:w-full sm:w-11/12    border-collapse">
           <thead>

@@ -35,6 +35,19 @@ const InvoiceForm = () => {
       ],
     },
   });
+  const notifi = () => {
+    toast.success("INVOICE ADDED SUCCESSFULLY!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Bounce,
+    });
+  };
   const items = watch("items");
   const subTotal = items.reduce((total: number, num) => {
     return total + num.quantity * num.price;
@@ -61,7 +74,11 @@ const InvoiceForm = () => {
       ...data,
     });
     localStorage.setItem("invoice", JSON.stringify(invoice));
-    navigate("/invoice-page");
+    notifi();
+    setTimeout(() => {
+      navigate("/invoice-page");
+    }, 2000);
+
     console.log(invoice);
   };
 
