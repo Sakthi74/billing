@@ -4,6 +4,7 @@ export const invoiceSchema = z.object({
   customerId: z.string().min(1, "Select a customer"),
   invoiceDate: z.string().min(1, "Invoice date is required"),
   dueDate: z.string().min(1, "Due date is required"),
+  status: z.string().min(1, "select Paid or unpaid"),
   items: z
     .array(
       z.object({

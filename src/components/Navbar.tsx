@@ -22,7 +22,7 @@ const Navbar = () => {
     "cursor-pointer px-4 py-5 text-black border border-gray-400 hover:bg-gray-100";
 
   return (
-    <div className="p-4 sm:p-6 bg-[#f1f5f9]">
+    <div className=" sm:p-6 bg-[#f1f5f9]">
       <nav className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 rounded-lg bg-white p-4 sm:h-18 sm:py-0 shadow-sm">
         {/* left side */}
         <div className="text-center sm:text-left">

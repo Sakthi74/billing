@@ -1,6 +1,8 @@
 import Customertable from "@/components/Customertable";
 import MiddleManage from "@/components/MiddleManage";
 import Navbar from "../components/Navbar";
+import { ErrorBoundary } from "react-error-boundary";
+import FallBack from "@/components/FallBack";
 
 const CustomerDashboard = () => {
   return (
@@ -8,7 +10,12 @@ const CustomerDashboard = () => {
       <div>
         <Navbar />
         <MiddleManage />
-        <Customertable />
+        <ErrorBoundary
+          FallbackComponent={FallBack}
+          onReset={() => window.location.reload()}
+        >
+          <Customertable />
+        </ErrorBoundary>
       </div>
     </>
   );

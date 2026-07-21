@@ -134,7 +134,7 @@ const Customertable = () => {
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border bg-white shadow">
+      <div className="overflow-x-auto rounded-xl border mb-3 bg-white shadow">
         <table className="lg:w-full md:w-full sm:w-11/12    border-collapse">
           <thead>
             {/* getting headers from header group */}

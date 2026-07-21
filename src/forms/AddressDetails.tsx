@@ -82,12 +82,12 @@ const AddressDetails = ({ setStep, step }: AddressDetailsProps) => {
   ];
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-[#f1f5f9] rounded-xl px-4 ">
-      <div className="flex flex-col lg:flex-row w-full max-w-[700px] justify-between items-center lg:items-center gap-6 lg:gap-4">
+    <div className="flex flex-col justify-center items-center  bg-[#f1f5f9] rounded-xl px-4 py-8  ">
+      <div className="flex flex-col lg:flex-row w-full max-w-[700px] justify-between items-center lg:items-center gap-6 lg:gap-4 overflow-y-auto">
         {/* Title */}
         <div className="flex flex-col justify-center text-center lg:text-left">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold">
-            Invoices
+            Customers
           </h1>
           <p className="text-gray-500 text-sm">
             Manage and track customer billings effortlessly.

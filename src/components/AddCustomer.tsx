@@ -26,7 +26,7 @@ const AddCustomer = () => {
     <>
       <Navbar />
       <FormProvider {...form}>
-        <form action="">
+        <form>
           {step === 1 && <PersonalDetails setStep={setStep} step={step} />}
 
           {step === 2 && <AddressDetails setStep={setStep} step={step} />}

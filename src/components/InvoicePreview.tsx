@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useInvoiceStore } from "./Store/InvoiceStore";
-
+import paid from "../assets/paid.png";
+import unpaid from "../assets/unpaid.png";
 const InvoicePreview = () => {
   const { id } = useParams();
 
@@ -72,41 +73,41 @@ const InvoicePreview = () => {
             <p>Due Date : {selectedInvoice.dueDate}</p>
           </div>
         </div>
+        <div className="overflow-x-auto">
+          <table className="lg:w-full md:w-full w-2/3  border ">
+            <thead className="bg-gray-100 border-t-">
+              <tr>
+                <th className="border p-3 text-left">Description</th>
 
-        <table className="w-full border">
-          <thead className="bg-gray-100 border-t">
-            <tr>
-              <th className="border p-3 text-left">Description</th>
+                <th className="border p-3">Qty</th>
 
-              <th className="border p-3">Qty</th>
+                <th className="border p-3">Price</th>
 
-              <th className="border p-3">Price</th>
+                <th className="border p-3">Tax %</th>
 
-              <th className="border p-3">Tax %</th>
-
-              <th className="border p-3">Total</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {selectedInvoice.items.map((item, index) => (
-              <tr key={index}>
-                <td className="border p-3">{item.description}</td>
-
-                <td className="border p-3 text-center">{item.quantity}</td>
-
-                <td className="border p-3 text-center">${item.price}</td>
-
-                <td className="border p-3 text-center">{item.tax}%</td>
-
-                <td className="border p-3 text-center">
-                  ${(item.quantity * item.price).toFixed(2)}
-                </td>
+                <th className="border p-3">Total</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
 
+            <tbody>
+              {selectedInvoice.items.map((item, index) => (
+                <tr key={index}>
+                  <td className="border p-3">{item.description}</td>
+
+                  <td className="border p-3 text-center">{item.quantity}</td>
+
+                  <td className="border p-3 text-center">${item.price}</td>
+
+                  <td className="border p-3 text-center">{item.tax}%</td>
+
+                  <td className="border p-3 text-center">
+                    ${(item.quantity * item.price).toFixed(2)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="mt-10 flex justify-end">
           <div className="w-72">
             <div className="flex justify-between py-2">
@@ -125,6 +126,11 @@ const InvoicePreview = () => {
             </div>
           </div>
         </div>
+        {selectedInvoice.status.toLowerCase() === "paid" ? (
+          <img src={paid} className="h-48 rotate-60 p-4" />
+        ) : (
+          <img src={unpaid} className="h-48 rotate-60 p-3" />
+        )}
       </div>
     </div>
   );

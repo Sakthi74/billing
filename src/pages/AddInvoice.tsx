@@ -6,9 +6,7 @@ const AddInvoice = () => {
     <div className="min-h-screen felx ">
       <Navbar />
 
-      <div className="flex justify-center  lg:ml-[660px]">
-        <InvoiceForm />
-      </div>
+      <InvoiceForm />
     </div>
   );
 };
